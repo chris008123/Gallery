@@ -1,0 +1,141 @@
+:root {
+  --bg: #0f172a;
+  --card: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #3b82f6;
+  --text: #e2e8f0;
+  --error: #ef4444;
+}
+
+/* Base */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+}
+
+/* Container */
+.dashboard-container {
+  padding: 1.5rem;
+}
+
+/* Header */
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Upload Section */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.upload-section input {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+}
+
+/* Button */
+.upload-btn {
+  padding: 0.7rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px var(--accent);
+}
+
+/* Status Text */
+.status-text {
+  text-align: center;
+  opacity: 0.7;
+}
+
+.error-text {
+  text-align: center;
+  color: var(--error);
+}
+
+.empty-text {
+  text-align: center;
+  opacity: 0.5;
+}
+
+/* Grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Card */
+.media-card {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.5rem;
+  position: relative;
+  transition: 0.3s ease;
+}
+
+.media-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+/* Media */
+.media-item {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Delete */
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border-radius: 50%;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: var(--error);
+  box-shadow: 0 0 10px var(--error);
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .upload-section {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
