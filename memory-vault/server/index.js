@@ -11,12 +11,20 @@ const app = express();
 
 const cors = require("cors");
 
+// ✅ VERY IMPORTANT: put CORS FIRST
 app.use(cors({
-  origin: "https://gallery-omega-lovat.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: [
+    "http://localhost:3000",
+    "https://gallery-omega-lovat.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
-app.use(express.json());
+
+// ✅ HANDLE PREFLIGHT REQUESTS
+app.options("*", cors());
+
 
 // Routes
 app.use("/api/auth", authRoutes);
