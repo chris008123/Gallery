@@ -9,7 +9,7 @@ const uploadRoute = require("./routes/upload");
 
 const app = express();
 
-// ✅ CORS FIRST
+// ✅ Global CORS middleware
 app.use(cors({
   origin: [
     "http://localhost:3000",
@@ -19,9 +19,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
-
-// ✅ Handle preflight requests
-app.options("*", cors());
 
 // ✅ Parse JSON
 app.use(express.json());
