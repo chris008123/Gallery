@@ -15,11 +15,10 @@ const allowedOrigins = [
   "https://gallery-omega-lovat.vercel.app"
 ];
 
-// ✅ CORS configuration
+// ✅ CORS config
 const corsOptions = {
   origin: function (origin, callback) {
-    // allow requests with no origin (like Postman or mobile apps)
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); // allow Postman / mobile
 
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -27,18 +26,25 @@ const corsOptions = {
       return callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 };
 
 // ✅ Apply CORS
 app.use(cors(corsOptions));
 
-// ✅ Handle preflight requests (VERY IMPORTANT)
-app.options("*", cors(corsOptions));
+// ✅ Handle preflight (NO wildcard crash)
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", "true");
+    return res.sendStatus(200);
+  }
+  next();
+});
 
-// ✅ Debug logger (helps trace issues)
+// ✅ Debug logger (helps track requests)
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
@@ -52,17 +58,17 @@ app.use("/api/auth", authRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/upload", uploadRoute);
 
-// ✅ Health check route (important for Render)
+// ✅ Health check (Render needs this)
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// ✅ Database connection
+// ✅ Connect DB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Database connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+  .catch(err => console.error("❌ MongoDB error:", err));
 
-// ✅ Start server (Render fix: bind 0.0.0.0)
+// ✅ Start server (IMPORTANT for Render)
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
