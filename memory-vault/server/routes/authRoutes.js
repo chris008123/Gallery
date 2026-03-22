@@ -19,6 +19,12 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ error: "Wrong password" });
 
+    // ✅ Check JWT_SECRET exists
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET is not defined!");
+      return res.status(500).json({ error: "Server misconfiguration" });
+    }
+
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET,
@@ -27,8 +33,8 @@ router.post("/login", async (req, res) => {
 
     res.json({ token });
   } catch (err) {
-  console.error("LOGIN ERROR:", err);
-  res.status(500).json({ error: err.message });
+    console.error("LOGIN ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
