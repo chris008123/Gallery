@@ -2,7 +2,7 @@ import axios from "axios";
 
 // ✅ Create Axios instance
 const API = axios.create({
-  baseURL: "https://gallery-rpji.onrender.com/api",
+  baseURL: "https://gallery-w4pj.onrender.com/api",
   withCredentials: true // important for CORS + cookies (future-proof)
 });
 
